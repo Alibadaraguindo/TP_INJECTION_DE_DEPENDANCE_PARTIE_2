@@ -1,25 +1,25 @@
 package org.example.depenses.service;
 
-import org.example.depenses.dao.DepenseDao;
+import org.example.depenses.dao.IDao;
 import org.example.depenses.modeles.Depense;
 
-public class GestionDepensesService {
-    private DepenseDao depenseDao;
+public class GestionDepensesService implements IMetier {
+    private IDao depenseDao;
 
-    // Injection de dépendance via constructeur
-    public GestionDepensesService(DepenseDao depenseDao) {
+    // Injection de dépendance via le constructeur
+    public GestionDepensesService(IDao depenseDao) {
         this.depenseDao = depenseDao;
     }
 
+    @Override
     public void ajouterDepense(Depense depense) {
         depenseDao.ajouterDepense(depense);
     }
 
+    @Override
     public double calculerTotalDepenses() {
-        double total = 0;
-        for (Depense depense : depenseDao.getAllDepenses()) {
-            total += depense.getMontant();
-        }
-        return total;
+        return depenseDao.getAllDepenses().stream()
+                .mapToDouble(Depense::getMontant)
+                .sum();
     }
 }

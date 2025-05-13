@@ -1,17 +1,24 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import org.example.depenses.dao.DepenseDao;
+import org.example.depenses.modeles.Depense;
+import org.example.depenses.service.GestionDepensesService;
+
+import java.util.Date;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        // Création de l'objet DAO
+        DepenseDao depenseDao = new DepenseDao();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        // Création du service métier avec l'injection de dépendance
+        GestionDepensesService service = new GestionDepensesService(depenseDao);
+
+        // Ajout des dépenses
+        service.ajouterDepense(new Depense("Achat de nourriture", 50.0, new Date()));
+        service.ajouterDepense(new Depense("Transport", 20.0, new Date()));
+
+        // Affichage du total des dépenses
+        System.out.println("Total des dépenses : " + service.calculerTotalDepenses());
     }
 }
